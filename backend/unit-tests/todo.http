@@ -3,8 +3,7 @@ post http://localhost:3000/tasks
 Content-Type: application/json
 
 {
-  "title": "task xyz",
-  "description" : "tunis"
+  "text": "task xyz"
 }
 
 ###
@@ -12,18 +11,27 @@ Content-Type: application/json
 get http://localhost:3000/tasks/all
 
 ###
-#read a task -- change the id of the ad
+#read all recent tasks
+get http://localhost:3000/tasks/recent
+
+###
+#read a task -- change the id 
 get http://localhost:3000/tasks/1
 
 
 ###
+#read a task -- change the status
+get http://localhost:3000/tasks/:status
+
+
+###
 #update a task -- change id of the task and the information
-put http://localhost:3000/tasks/3
+put http://localhost:3000/tasks/2
 Content-Type: application/json
 
 {
-  "title": "tttt",
-  "description" : "tunis"
+  "text": "tttt",
+  "status" : "tunis"
 }
 
 

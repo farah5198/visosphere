@@ -7,23 +7,30 @@ const tasks = [];
 app.use(bodyParser.json());
 // Define a route for creating a new task
 app.post("/tasks", (req, res) => {
-    const task = req.body;
+  const task = {
+    text: req.body.text,
+    status: "pending",
+    createdAt: new Date(),
+  };
     task.id = tasks.length + 1;
-    task.status = "pending";
     tasks.push(task);
     res.json(task);
 
 });
 // Define a route for getting all tasks
 app.get("/tasks/all", (req, res) => {
-  
-
   res.json(tasks);
+});
+// Define a route for getting all tasks with the most recently added tasks at the top.
+app.get("/tasks/recent", (req, res) => {
+  // Sort the tasks in reverse chronological order
+  const sortedTasks = tasks.sort((a, b) => b.createdAt - a.createdAt);
+  res.json(sortedTasks);
 });
 // Define a route for getting a single task by ID
 app.get("/tasks/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const task = tasks.find((task) => task.id === id);
+  const id = parseInt(req.params.id);
+  const task = tasks.find((task) => task.id === id);
   
     if (task) {
       res.json(task);
@@ -31,6 +38,11 @@ app.get("/tasks/:id", (req, res) => {
       res.status(404).send("Task not found");
     }
   });
+// Define a  route to filter the tasks by status
+app.get("/tasks/:status", (req, res) => {
+    const tasks = tasks.filter((task) => task.status === req.params.status);
+    res.json(tasks);
+});
 // Define a route for updating a task
 app.put("/tasks/:id", (req, res) => {
     const id = parseInt(req.params.id);
