@@ -1,0 +1,41 @@
+#create a task 
+post http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "text": "task xyz"
+}
+
+###
+#read all tasks
+get http://localhost:3000/tasks/all
+
+###
+#read all recent tasks
+get http://localhost:3000/tasks/recent
+
+###
+#read a task -- change the id 
+get http://localhost:3000/tasks/1
+
+
+###
+#read a task -- change the status
+get http://localhost:3000/tasks/:status
+
+
+###
+#update a task -- change id of the task and the information
+put http://localhost:3000/tasks/2
+Content-Type: application/json
+
+{
+  "text": "tttt",
+  "status" : "tunis"
+}
+
+
+###
+#delete a task -- change the task id 
+delete http://localhost:3000/tasks/2
+Content-Type: application/json
