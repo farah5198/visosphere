@@ -1,14 +1,23 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
+
+app.use(cors({
+  origin: "*"
+}));
+
 // Create a simple in-memory database of tasks
 const tasks = [];
+
 // Add a middleware to parse JSON data in the request body
 app.use(bodyParser.json());
+
+
 // Define a route for creating a new task
 app.post("/tasks", (req, res) => {
   const task = {
-    text: req.body.text,
+    title: req.body.title,
     status: "pending",
     createdAt: new Date(),
   };
@@ -21,10 +30,11 @@ app.post("/tasks", (req, res) => {
 app.get("/tasks/all", (req, res) => {
   res.json(tasks);
 });
+
 // Define a route for getting all tasks with the most recently added tasks at the top.
 app.get("/tasks/recent", (req, res) => {
-  // Sort the tasks in reverse chronological order
-  const sortedTasks = tasks.sort((a, b) => b.createdAt - a.createdAt);
+
+  const sortedTasks = tasks.sort((task1, task2) => task2.createdAt - task1.createdAt);
   res.json(sortedTasks);
 });
 // Define a route for getting a single task by ID
@@ -43,6 +53,7 @@ app.get("/tasks/:status", (req, res) => {
     const tasks = tasks.filter((task) => task.status === req.params.status);
     res.json(tasks);
 });
+
 // Define a route for updating a task
 app.put("/tasks/:id", (req, res) => {
     const id = parseInt(req.params.id);
@@ -50,7 +61,6 @@ app.put("/tasks/:id", (req, res) => {
   
     if (task) {
       task.title = req.body.title;
-      task.description = req.body.description;
       task.status = req.body.status;
   
       res.json(task);
